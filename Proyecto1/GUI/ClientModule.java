@@ -3,6 +3,7 @@ package Proyecto1.GUI;
 import Proyecto1.Client.Client;
 import Proyecto1.Client.ClientDAO;
 import Proyecto1.Componentes.StyledButton;
+import Proyecto1.Product.ProductDAO;
 import Proyecto1.Reports.ReportGenerator;
 
 import javax.swing.*;
@@ -285,8 +286,12 @@ private static void deleteClient(JTable table, DefaultTableModel model) {
     // Método para generar reporte de clientes
     private static void generateClientReport() {
         try {
+                    if (ClientDAO.getInstance().clients.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay Clientes Disponibles.", "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
             ReportGenerator.generateClientReport();
-            JOptionPane.showMessageDialog(null, "Reporte de Clientes generado exitosamente.");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

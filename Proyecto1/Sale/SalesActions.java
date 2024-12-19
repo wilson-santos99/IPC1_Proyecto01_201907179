@@ -8,6 +8,7 @@ import Proyecto1.Componentes.SalesViewComponents;
 import Proyecto1.Componentes.StyledButton;
 import Proyecto1.Reports.ReportGenerator;
 import Proyecto1.Factura.generarFactura;
+import Proyecto1.GUI.SalesModule;
 import Proyecto1.Componentes.CustomDialog;
 
 import javax.swing.*;
@@ -102,22 +103,25 @@ public class SalesActions {
                     "No se han registrado ventas hasta el momento. La lista está vacía.",
                     "Lista de Ventas"
             );
+            SalesModule.salesView();
             return;
+                
         }
-
+        
         JFrame salesListFrame = new JFrame("Lista de Ventas");
         salesListFrame.setLayout(null);
         salesListFrame.setSize(800, 650);
         salesListFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         salesListFrame.setLocationRelativeTo(null);
         salesListFrame.getContentPane().setBackground(new Color(33, 40, 48));
-
+        
         JLabel titleLabel = SalesViewComponents.createTitleLabel("Lista de Ventas");
+        titleLabel.setBounds(50, 20, 700, 40); // Ajusta la posición si es necesario
         salesListFrame.add(titleLabel);
-
+        
         JTable table = new JTable();
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"Cliente", "Producto", "Cantidad", "Total", "Fecha"},
+                new String[]{"Cliente", "Producto", "Cantidad", "Precio", "Total", "Fecha"},
                 0
         );
         table.setModel(model);
@@ -129,29 +133,42 @@ public class SalesActions {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(50, 100, 700, 400);
         salesListFrame.add(scrollPane);
-
-        populateSalesTable(model);
-
+        
+        // Asegúrate de llenar la tabla después de inicializar el modelo
+        populateSalesTableWithPrice(model);
+        
         StyledButton backButton = new StyledButton("Volver", new Color(211, 47, 47));
         backButton.setBounds(300, 520, 200, 50);
-        backButton.addActionListener(e -> salesListFrame.dispose());
-        salesListFrame.add(backButton);
-
-        salesListFrame.setVisible(true);
-    }
-
-    private static void populateSalesTable(DefaultTableModel model) {
-        SaleDAO.getInstance().sales.forEach(sale -> {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
-            model.addRow(new Object[]{
-                    sale.getClientName(),
-                    sale.getProductName(),
-                    sale.getQuantity(),
-                    String.format("Q%.2f", sale.getTotal()),
-                    dateFormat.format(sale.getDate())
-            });
+        backButton.addActionListener(e -> {
+            salesListFrame.dispose();
+            SalesModule.salesView();
         });
-    }
+        salesListFrame.add(backButton);
+        
+        salesListFrame.setVisible(true);
+        }
+        
+        private static void populateSalesTableWithPrice(DefaultTableModel model) {
+            SaleDAO.getInstance().sales.forEach(sale -> {
+                Product product = ProductDAO.getInstance().products.stream()
+                        .filter(p -> p.getName().equals(sale.getProductName()))
+                        .findFirst()
+                        .orElse(null); // Encuentra el producto correspondiente
+        
+                double price = product != null ? product.getPrice() : 0.0; // Obtiene el precio del producto, o 0 si no se encuentra
+        
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
+                model.addRow(new Object[]{
+                        sale.getClientName(),
+                        sale.getProductName(),
+                        sale.getQuantity(),
+                        String.format("Q%.2f", price), // Incluye el precio unitario
+                        String.format("Q%.2f", sale.getTotal()),
+                        dateFormat.format(sale.getDate())
+                });
+            });
+        }
+        
 
     private static void registerSale(JComboBox<Client> clientComboBox, JComboBox<Product> productComboBox, JTextField quantityField, JFrame frame) {
         Client selectedClient = (Client) clientComboBox.getSelectedItem();

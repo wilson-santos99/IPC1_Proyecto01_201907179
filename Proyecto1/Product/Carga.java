@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import Proyecto1.Componentes.CustomDialog;
 import Proyecto1.Product.Carga;
 
 public class Carga {
@@ -59,9 +61,9 @@ public class Carga {
                     }
                 }
 
-                JOptionPane.showMessageDialog(null,
+                CustomDialog.showSuccessMessage(
                         "Carga masiva completada.\nLíneas exitosas: " + successCount +
-                                "\nLíneas con error: " + (totalLines - successCount - 1));
+                                "\nLíneas con error: " + (totalLines - successCount - 1), "Carga Exitosa");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null,
                         "Error al cargar productos: " + ex.getMessage(),

@@ -7,7 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class LoginFrame {
-    static String[] adminData = {"sensei_201907179", "ipc1_201907179"};
+    static String[] adminData = {"ss", "dd"};
 
     public static void loginView() {
         JFrame loginFrame = new JFrame("Sistema Dojo");

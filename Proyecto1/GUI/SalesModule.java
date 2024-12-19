@@ -1,4 +1,5 @@
 package Proyecto1.GUI;
+
 import Proyecto1.Componentes.StyledButton;
 import Proyecto1.Sale.SalesActions;
 import javax.swing.*;
@@ -32,12 +33,17 @@ public class SalesModule {
         StyledButton salesReportButton = new StyledButton("Reporte de Ventas", new Color(255, 193, 7));
         salesReportButton.setBounds(300, 100, 200, 50);
         salesReportButton.addActionListener(e -> SalesActions.generateSalesReport());
+
         salesFrame.add(salesReportButton);
 
         // Botón Lista de Ventas
         StyledButton salesListButton = new StyledButton("Lista de Ventas", new Color(41, 121, 255));
         salesListButton.setBounds(550, 100, 200, 50);
-        salesListButton.addActionListener(e -> SalesActions.showSalesList());
+        salesListButton.addActionListener(e -> {
+            SalesActions.showSalesList();
+            salesFrame.dispose();
+        });
+
         salesFrame.add(salesListButton);
 
         // Botón Volver

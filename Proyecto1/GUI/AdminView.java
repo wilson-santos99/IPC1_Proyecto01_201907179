@@ -1,12 +1,15 @@
 package Proyecto1.GUI;
 
 import Proyecto1.Componentes.StyledButton;
+import Proyecto1.Componentes.CustomDialog;
 import Proyecto1.Componentes.Header;
 import Proyecto1.Componentes.ImageLoader;
 import Proyecto1.Persistence.PersistenceManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AdminView {
     public static void adminView() {
@@ -29,39 +32,70 @@ public class AdminView {
         logoLabel.setIcon(ImageLoader.loadImage("./Proyecto1/Resources/avatar.png", 200, 200));
         adminFrame.add(logoLabel);
 
-        // Botones
-        adminFrame.add(createButton("Módulo de Productos", new Color(100, 181, 246), 50, 350, () -> {
-            adminFrame.dispose();
-            ProductModule.productView();
-        }));
-        adminFrame.add(createButton("Módulo de Clientes", new Color(77, 182, 172), 300, 350, () -> {
-            adminFrame.dispose();
-            ClientModule.clientView();
-        }));
-        adminFrame.add(createButton("Módulo de Ventas", new Color(255, 183, 77), 550, 350, () -> {
-            adminFrame.dispose();
-            SalesModule.salesView();
-        }));
-        adminFrame.add(createButton("Guardar Datos", new Color(156, 39, 176), 300, 420, () -> {
-            try {
-                PersistenceManager.saveData();
-                JOptionPane.showMessageDialog(adminFrame, "<html><center><h3 style='color:#4CAF50;'>✓ Datos guardados exitosamente</h3></center></html>");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(adminFrame, "<html><center><h3 style='color:#FF5252;'>✘ Error al guardar datos: " + ex.getMessage() + "</h3></center></html>", "Error", JOptionPane.ERROR_MESSAGE);
+        // Botón: Módulo de Productos
+        StyledButton productButton = new StyledButton("Módulo de Productos", new Color(100, 181, 246));
+        productButton.setBounds(50, 350, 200, 50);
+        productButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                adminFrame.dispose();
+                ProductModule.productView();
             }
-        }));
-        adminFrame.add(createButton("Cerrar Sesión", new Color(244, 67, 54), 300, 490, () -> {
-            adminFrame.dispose();
-            LoginFrame.loginView();
-        }));
+        });
+        adminFrame.add(productButton);
+
+        // Botón: Módulo de Clientes
+        StyledButton clientButton = new StyledButton("Módulo de Clientes", new Color(77, 182, 172));
+        clientButton.setBounds(300, 350, 200, 50);
+        clientButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                adminFrame.dispose();
+                ClientModule.clientView();
+            }
+        });
+        adminFrame.add(clientButton);
+
+        // Botón: Módulo de Ventas
+        StyledButton salesButton = new StyledButton("Módulo de Ventas", new Color(255, 183, 77));
+        salesButton.setBounds(550, 350, 200, 50);
+        salesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                adminFrame.dispose();
+                SalesModule.salesView();
+            }
+        });
+        adminFrame.add(salesButton);
+
+        // Botón: Guardar Datos
+        StyledButton saveButton = new StyledButton("Guardar Datos", new Color(156, 39, 176));
+        saveButton.setBounds(300, 420, 200, 50);
+        saveButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    PersistenceManager.saveData();
+                    CustomDialog.showSuccessMessage(" Datos guardados exitosamente", "¡Éxito!");
+                } catch (Exception ex) {
+                    CustomDialog.showSuccessMessage("Error al guardar datos: " + ex.getMessage(),"Error");
+                }
+            }
+        });
+        adminFrame.add(saveButton);
+
+        // Botón: Cerrar Sesión
+        StyledButton logoutButton = new StyledButton("Cerrar Sesión", new Color(244, 67, 54));
+        logoutButton.setBounds(300, 490, 200, 50);
+        logoutButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                adminFrame.dispose();
+                LoginFrame.loginView();
+            }
+        });
+        adminFrame.add(logoutButton);
 
         adminFrame.setVisible(true);
-    }
-
-    private static StyledButton createButton(String text, Color color, int x, int y, Runnable action) {
-        StyledButton button = new StyledButton(text, color);
-        button.setBounds(x, y, 200, 50);
-        button.addActionListener(e -> action.run());
-        return button;
     }
 }

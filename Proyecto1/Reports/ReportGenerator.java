@@ -4,6 +4,7 @@ import Proyecto1.Product.Product;
 import Proyecto1.Product.ProductDAO;
 import Proyecto1.Client.Client;
 import Proyecto1.Client.ClientDAO;
+import Proyecto1.Componentes.CustomDialog;
 import Proyecto1.Sale.Sale;
 import Proyecto1.Sale.SaleDAO;
 import java.nio.charset.StandardCharsets;
@@ -76,7 +77,7 @@ public class ReportGenerator {
                 writer.println("</html>");
             }
 
-            JOptionPane.showMessageDialog(null, "Reporte generado: " + fileName);
+          CustomDialog.showSuccessMessage("Reporte generado: " + fileName,"Reporte de Top Productos Exitoso");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -128,7 +129,7 @@ public class ReportGenerator {
                 writer.println("</body>");
                 writer.println("</html>");
             }
-            JOptionPane.showMessageDialog(null, "Reporte generado: " + fileName);
+           CustomDialog.showSuccessMessage("Reporte generado: " + fileName,"Reporte Clientes Exitoso");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -190,7 +191,7 @@ public class ReportGenerator {
                 writer.println("</body>");
                 writer.println("</html>");
             }
-            JOptionPane.showMessageDialog(null, "Reporte generado: " + fileName);
+           
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

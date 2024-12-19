@@ -34,8 +34,8 @@ public class Main {
             clientHandler.clients = new ArrayList<>();
             saleHandler.sales = new ArrayList<>();
         }
-    
-       AdminView.adminView();
+        AdminView.adminView();
+       //LoginFrame.loginView();
     }
     
 }
