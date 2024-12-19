@@ -1,24 +1,20 @@
 package Proyecto1.Factura;
-
 import Proyecto1.Client.Client;
 import Proyecto1.Product.Product;
-
 import javax.swing.*;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 public class generarFactura {
-
     public static void generar(Client client, Product product, int quantity, double total) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
-            String date = dateFormat.format(new Date());
-
-            String fileName = client.getName() + "_" + date.replace(" ", "_").replace("de", "").replace("'", "") + ".html";
-
+            // Formato para fecha y hora
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy HH:mm", new Locale("es", "ES"));
+            String dateTime = dateFormat.format(new Date());
+            // Crear el nombre del archivo con fecha y hora
+            String fileName = client.getName() + "_" + dateTime.replace(" ", "_").replace(":", "-").replace("de", "").replace("'", "") + ".html";
             try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
                 writer.println("<!DOCTYPE html>");
                 writer.println("<html lang=\"es\">");
@@ -42,9 +38,9 @@ public class generarFactura {
                 writer.println("<body style=\"background-color: #f4f4f9;\">");
                 writer.println("    <div class=\"container invoice-container\">");
                 writer.println("        <div class=\"header\">");
-                writer.println("            <img src=\"logo.png\" alt=\"Company Logo\">");
+                writer.println("            <img src=\"Proyecto1/Resources/logo.png\" alt=\"Company Logo\">");
                 writer.println("            <h1>Factura de Venta</h1>");
-                writer.println("            <p>Fecha: " + date + "</p>");
+                writer.println("            <p>Fecha y Hora: " + dateTime + "</p>"); // Fecha y hora en el HTML
                 writer.println("        </div>");
                 writer.println("        <div class=\"details\">");
                 writer.println("            <p><strong>Cliente:</strong> " + client.getName() + "</p>");
@@ -78,7 +74,6 @@ public class generarFactura {
                 writer.println("</body>");
                 writer.println("</html>");
             }
-
             JOptionPane.showMessageDialog(null, "Factura generada: " + fileName);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al generar la factura: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

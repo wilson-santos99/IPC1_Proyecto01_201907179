@@ -1,23 +1,18 @@
 package Proyecto1.Product;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-
 public class ProductDAO implements Serializable {
     public ArrayList<Product> products;
     private static ProductDAO instance;
-
     private ProductDAO() {
         this.products = new ArrayList<>();
     }
-
     public static ProductDAO getInstance() {
         if (instance == null) {
             instance = new ProductDAO();
         }
         return instance;
     }
-
     public Object[][] getProductsData() {
         Object[][] data = new Object[products.size()][4];
         for (int i = 0; i < products.size(); i++) {
@@ -29,7 +24,6 @@ public class ProductDAO implements Serializable {
         }
         return data;
     }
-
     public boolean addProduct(int id, String name, double price, int stock) {
         for (Product p : products) {
             if (p.getName().equalsIgnoreCase(name)) {
@@ -39,7 +33,6 @@ public class ProductDAO implements Serializable {
         products.add(new Product(id, name, price, stock));
         return true;
     }
-
     public boolean updateProductStock(String name, int stock) {
         for (Product p : products) {
             if (p.getName().equalsIgnoreCase(name)) {
@@ -49,7 +42,6 @@ public class ProductDAO implements Serializable {
         }
         return false;
     }
-
     public boolean updateProductPrice(String name, double price) {
         for (Product p : products) {
             if (p.getName().equalsIgnoreCase(name)) {
@@ -59,7 +51,6 @@ public class ProductDAO implements Serializable {
         }
         return false;
     }
-
     public boolean deleteProduct(String name) {
         return products.removeIf(p -> p.getName().equalsIgnoreCase(name));
     }

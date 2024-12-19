@@ -1,12 +1,10 @@
 package Proyecto1.Client;
-
 import java.io.Serializable;
-
 public class Client implements Serializable {
     private String name;
     private String nit;
     private double totalPurchases;
-    private int purchaseCount; // Nuevo campo para contar las compras
+    private int purchaseCount; 
 
     public Client(String name, String nit) {
         this.name = name;
@@ -40,10 +38,8 @@ public class Client implements Serializable {
     public int getPurchaseCount() {
         return purchaseCount;
     }
-
     @Override
     public String toString() {
         return name + " (" + nit + ")";
     }
-
 }

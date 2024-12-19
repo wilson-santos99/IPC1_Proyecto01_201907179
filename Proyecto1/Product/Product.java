@@ -7,7 +7,7 @@ public class Product implements Serializable {
     private String name;
     private double price;
     private int stock;
-    private int sold; // Nuevo atributo para la cantidad vendida
+    private int sold; 
 
     public Product(int productId, String name, double price, int stock) {
         this.productId = productId;

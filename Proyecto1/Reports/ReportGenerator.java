@@ -6,17 +6,17 @@ import Proyecto1.Client.Client;
 import Proyecto1.Client.ClientDAO;
 import Proyecto1.Sale.Sale;
 import Proyecto1.Sale.SaleDAO;
-
+import java.nio.charset.StandardCharsets;
 import javax.swing.*;
 import java.io.PrintWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 public class ReportGenerator {
-
     public static void generateProductReport() {
         try {
             // Obtener los productos y ordenarlos por la cantidad vendida
@@ -29,7 +29,8 @@ public class ReportGenerator {
 
             // Generar el reporte en HTML
             String fileName = "top5_products_report.html";
-            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.UTF_8))) {
+
                 writer.println("<!DOCTYPE html>");
                 writer.println("<html lang='es'>");
                 writer.println("<head>");
@@ -168,10 +169,9 @@ public class ReportGenerator {
                 writer.println("                </tr>");
                 writer.println("            </thead>");
                 writer.println("            <tbody>");
-    
+
                 List<Sale> sales = SaleDAO.getInstance().sales;
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
-    
                 for (Sale sale : sales) {
                     double pricePerUnit = sale.getTotal() / sale.getQuantity(); // Calcular precio por unidad
                     writer.println("                <tr>");
@@ -184,7 +184,6 @@ public class ReportGenerator {
                     writer.println("                    <td>" + dateFormat.format(sale.getDate()) + "</td>");
                     writer.println("                </tr>");
                 }
-    
                 writer.println("            </tbody>");
                 writer.println("        </table>");
                 writer.println("    </div>");
@@ -196,5 +195,4 @@ public class ReportGenerator {
             JOptionPane.showMessageDialog(null, "Error al generar el reporte: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
 }
